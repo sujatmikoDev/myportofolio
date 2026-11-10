@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SujatmikoDev | IT Solutions & Web Developer</title>
+    <meta name="theme-color" content="#050816">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SujatmikoDev">
+    <meta name="description" content="Portofolio SujatmikoDev: web developer dan IT support di Balikpapan.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <link rel="preconnect" href="https://drive.google.com">
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+
+    <script>
+        /* ===== TEMA WARNA =====
+           5 palet pilihan pemilik. Tiap palet punya versi gelap (d) dan terang (l).
+           bg = latar, m = aksen utama (tombol, judul), v = aksen kedua, b = aksen ketiga, c = aksen keempat.
+           Mau ganti warna? Ubah kode hex di bawah ini. */
+        window.SD_THEMES = [
+            { id: 'neon',    name: 'Neon',    d: { bg: '#050816', m: '#ff2bd6', v: '#7a3cff', b: '#2d7bff', c: '#22d3ee' }, l: { bg: '#f6f4ff', m: '#c0189f', v: '#5b2bd9', b: '#1d5fd6', c: '#0e7490' } },
+            { id: 'samudra', name: 'Samudra', d: { bg: '#03111a', m: '#0891b2', v: '#0284c7', b: '#6366f1', c: '#0d9488' }, l: { bg: '#eef8fb', m: '#0e7490', v: '#0369a1', b: '#4338ca', c: '#0f766e' } },
+            { id: 'matrix',  name: 'Matrix',  d: { bg: '#04120a', m: '#16a34a', v: '#0d9488', b: '#65a30d', c: '#059669' }, l: { bg: '#eefaf1', m: '#15803d', v: '#0f766e', b: '#4d7c0f', c: '#047857' } },
+            { id: 'senja',   name: 'Senja',   d: { bg: '#150a07', m: '#ea580c', v: '#e11d48', b: '#d97706', c: '#db2777' }, l: { bg: '#fff5ee', m: '#c2410c', v: '#be123c', b: '#b45309', c: '#be185d' } },
+            { id: 'royal',   name: 'Royal',   d: { bg: '#0c0720', m: '#7c3aed', v: '#c026d3', b: '#d97706', c: '#ca8a04' }, l: { bg: '#f7f3ff', m: '#6d28d9', v: '#a21caf', b: '#92400e', c: '#a16207' } }
+        ];
+        (function () {
+            var ROOT = document.documentElement, T = window.SD_THEMES, cur = null;
+            function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+            function rgb(h) { h = h.replace('#', ''); return parseInt(h.substr(0, 2), 16) + ' ' + parseInt(h.substr(2, 2), 16) + ' ' + parseInt(h.substr(4, 2), 16); }
+            function find(id) { for (var i = 0; i < T.length; i++) if (T[i].id === id) return T[i]; return null; }
+            window.sdFind = find;
+            window.sdApply = function (id, mode, animate) {
+                var t = find(id) || T[0];
+                mode = (mode === 'light') ? 'light' : 'dark';
+                var p = mode === 'light' ? t.l : t.d;
+                if (animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+                    ROOT.classList.add('sd-anim');
+                    clearTimeout(window.__sdAnimT);
+                    window.__sdAnimT = setTimeout(function () { ROOT.classList.remove('sd-anim'); }, 800);
+                }
+                ['bg', 'm', 'v', 'b', 'c'].forEach(function (k) { ROOT.style.setProperty('--' + k + '-rgb', rgb(p[k])); });
+                ROOT.setAttribute('data-sd-theme', t.id);
+                ROOT.setAttribute('data-mode', mode);
+                var mt = document.querySelector('meta[name="theme-color"]');
+                if (mt) mt.setAttribute('content', p.bg);
+                cur = { id: t.id, mode: mode, p: p };
+                window.sdCur = cur;
+                try { window.dispatchEvent(new CustomEvent('sdtheme', { detail: cur })); } catch (e) {}
+            };
+            window.sdColors = function () { var p = cur.p; return [p.m, p.v, p.b]; };
+            window.sdApply(ls('sd_theme') || 'neon', ls('sd_mode') || 'dark', false);
+        })();
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { bg: 'rgb(var(--bg-rgb) / <alpha-value>)', magenta: 'rgb(var(--m-rgb) / <alpha-value>)', violet: 'rgb(var(--v-rgb) / <alpha-value>)', blue: 'rgb(var(--b-rgb) / <alpha-value>)', cyan: 'rgb(var(--c-rgb) / <alpha-value>)', text: 'rgb(var(--text-rgb) / <alpha-value>)' }
+                    },
+                    fontFamily: {
+                        'display': ['Anton', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'accent': ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; background-color: rgb(var(--bg-rgb)) !important; }
+        
+        #portfolio-app-container {
+            position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
+            z-index: 2147483647 !important; background-color: rgb(var(--bg-rgb)); color: rgb(var(--text-rgb));
+            overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; font-family: 'Inter', sans-serif;
+        }
+
+        .blogger-element, #navbar-iframe, .widget, .post-footer, .comments, .header-widget { display: none !important; }
+
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-bd); box-shadow: 0 4px 30px var(--glass-sh); }
+        .glass-panel:hover { border-color: rgb(var(--m-rgb) / 0.3); }
+
+        .title-giant { font-family: 'Anton', sans-serif; letter-spacing: 2px; }
+        .text-gradient { background: linear-gradient(to right, rgb(var(--m-rgb)), rgb(var(--v-rgb)), rgb(var(--b-rgb))); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .text-glow { text-shadow: 0 0 20px rgb(var(--m-rgb) / 0.5); }
+        .box-glow { box-shadow: 0 0 20px rgb(var(--b-rgb) / 0.3); }
+
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .floating { animation: float 6s ease-in-out infinite; }
+        
+        .fade-in-scroll { opacity: 0; transform: translateY(14px); transition: opacity 0.35s ease-out, transform 0.35s ease-out; }
+        .fade-in-scroll.visible { opacity: 1; transform: translateY(0); }
+
+        .view-section { display: none; opacity: 0; animation: fadeIn 0.25s forwards; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Marquee Animation Flawless Loop */
+        .marquee-container { overflow: hidden; width: 100%; display: flex; }
+        .marquee-content { display: flex; width: max-content; animation: marquee 15s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Timeline Line */
+        .timeline-line::before {
+            content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 2px; background: rgb(var(--fg-rgb) / 0.12);
+        }
+
+        #portfolio-app-container::-webkit-scrollbar { width: 8px; }
+        #portfolio-app-container::-webkit-scrollbar-track { background: rgb(var(--bg-rgb)); }
+        #portfolio-app-container::-webkit-scrollbar-thumb { background: rgb(var(--v-rgb)); border-radius: 10px; }
+        /* Hero ringan: tanpa blur besar, skeleton sampai gambar siap */
+        .hero-glow { background: radial-gradient(closest-side, rgb(var(--v-rgb) / 0.28), rgb(var(--v-rgb) / 0) 70%); }
+        .shimmer { background: linear-gradient(110deg, rgb(var(--fg-rgb) / 0.04) 30%, rgb(var(--fg-rgb) / 0.12) 50%, rgb(var(--fg-rgb) / 0.04) 70%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+        @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) { .hero-frame { animation: float 6s ease-in-out infinite; } }
+
+        /* Slideshow kartu karya (crossfade ringan) */
+        .slideshow { position: relative; overflow: hidden; background: #000; cursor: zoom-in; }
+        .slideshow .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity .7s ease; }
+        .slideshow .slide.on { opacity: 1; transform: scale(1); transition: opacity .7s ease, transform 4s ease-out; }
+        .slideshow .dots { position: absolute; left: 0; right: 0; bottom: 8px; display: flex; gap: 6px; justify-content: center; pointer-events: none; }
+        .slideshow .dots i { width: 6px; height: 6px; border-radius: 99px; background: rgba(255,255,255,.35); transition: all .3s; }
+        .slideshow .dots i.on { width: 18px; background: rgb(var(--m-rgb)); }
+        @media (prefers-reduced-motion: reduce) { .slideshow .slide, .slideshow .slide.on { transition: none; } .fade-in-scroll { transition: none; } }
+        /* Background Layanan: Ken Burns pelan + shine emas tipis, dijaga tetap terbaca */
+        #layanan-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility .8s; --lay-dim: .78; }
+        #layanan-bg.on.has-img { opacity: 1; visibility: visible; }
+        #layanan-bg:not(.on) * { animation-play-state: paused !important; }
+        #layanan-bg img { position: absolute; top: -4%; left: -4%; width: 108%; height: 108%; object-fit: cover; object-position: 50% 30%; transition: opacity 1.4s ease; animation: layKen 32s ease-in-out infinite alternate; will-change: transform; }
+        @keyframes layKen { from { transform: scale(1) translate3d(0,0,0); } to { transform: scale(1.12) translate3d(-1.5%,-1%,0); } }
+        #layanan-bg .lb-dim { position: absolute; inset: 0; background: rgb(var(--bg-rgb) / var(--lay-dim)); }
+        #layanan-bg .lb-vig { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(var(--bg-rgb)) 0%, rgb(var(--bg-rgb) / 0) 24%, rgb(var(--bg-rgb) / 0) 60%, rgb(var(--bg-rgb)) 100%), radial-gradient(ellipse at 50% 45%, rgb(var(--bg-rgb) / 0) 38%, rgb(var(--bg-rgb) / .7) 100%); }
+        #layanan-bg .lb-shine { position: absolute; inset: 0; background: linear-gradient(105deg,transparent 38%,rgba(255,226,170,.07) 50%,transparent 62%); transform: translateX(-120%); animation: layShine 12s ease-in-out infinite; }
+        @keyframes layShine { 0%,55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+        /* Kartu & teks Layanan saat ada background: tanpa blur (hemat GPU) tapi lebih pekat agar terbaca */
+        #view-layanan.with-bg .glass-panel { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgb(var(--bg-rgb) / .68); border-color: rgb(var(--fg-rgb) / .12); }
+        #view-layanan.with-bg h2, #view-layanan.with-bg h3 { text-shadow: 0 2px 20px rgba(0,0,0,.55); }
+        #view-layanan.with-bg .text-gray-400 { color: rgb(var(--text-rgb) / .82); }
+        @media (prefers-reduced-motion: reduce) { #layanan-bg img, #layanan-bg .lb-shine { animation: none; } }
+        /* Menu HP: melebar ke kiri di dalam header (tidak turun menutupi konten) */
+        #mobile-menu { display: none; }
+        @media (max-width: 767px) {
+            #mobile-menu { display: flex; position: absolute; top: 0; bottom: 0; left: 0; right: 42px; align-items: center; justify-content: space-around; gap: 4px; padding: 0 6px 0 2px; z-index: 5;
+                background: rgb(var(--bg-rgb) / .97); clip-path: inset(0 0 0 100%); visibility: hidden;
+                transition: clip-path .42s cubic-bezier(.22,1,.36,1), visibility 0s linear .42s; }
+            #mobile-menu.open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .42s cubic-bezier(.22,1,.36,1), visibility 0s; }
+            #mobile-menu .mm-item { opacity: 0; transform: translateX(16px); transition: opacity .3s ease, transform .3s ease; white-space: nowrap; font-weight: 700; font-size: 14px; padding: 10px 6px; }
+            #mobile-menu.open .mm-item { opacity: 1; transform: none; }
+            #mobile-menu.open .mm-item:nth-child(1) { transition-delay: .08s; }
+            #mobile-menu.open .mm-item:nth-child(2) { transition-delay: .14s; }
+            #mobile-menu.open .mm-item:nth-child(3) { transition-delay: .20s; }
+            #mobile-menu.open .mm-item:nth-child(4) { transition-delay: .26s; }
+        }
+        @media (prefers-reduced-motion: reduce) { #mobile-menu, #mobile-menu.open, #mobile-menu .mm-item { transition: none; } }
+        #lightbox { display: none; }
+        #lightbox.open { display: flex; }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* ===== TEMA: variabel, mode terang, panel pengunjung ===== */
+        :root {
+            --bg-rgb: 5 8 22; --m-rgb: 255 43 214; --v-rgb: 122 60 255; --b-rgb: 45 123 255; --c-rgb: 34 211 238;
+            --text-rgb: 232 234 255; --fg-rgb: 255 255 255;
+            --glass-bg: rgb(255 255 255 / .02); --glass-bd: rgb(255 255 255 / .05); --glass-sh: rgba(0, 0, 0, .10);
+            color-scheme: dark;
+        }
+        html[data-mode="light"] {
+            --text-rgb: 23 23 43; --fg-rgb: 23 23 43;
+            --glass-bg: rgb(255 255 255 / .72); --glass-bd: rgb(23 23 43 / .10); --glass-sh: rgba(23, 23, 43, .08);
+            color-scheme: light;
+        }
+        html.sd-anim body, html.sd-anim body * { transition: background-color .6s ease, border-color .6s ease, color .6s ease, box-shadow .6s ease !important; }
+
+        /* Mode terang: kelas Tailwind bernuansa gelap dipetakan ke warna teks/permukaan terang */
+        html[data-mode="light"] .text-white { color: rgb(var(--text-rgb)); }
+        html[data-mode="light"] .text-gray-200, html[data-mode="light"] .text-gray-300 { color: rgb(var(--text-rgb) / .88); }
+        html[data-mode="light"] .text-gray-400 { color: rgb(var(--text-rgb) / .74); }
+        html[data-mode="light"] .text-gray-500 { color: rgb(var(--text-rgb) / .62); }
+        html[data-mode="light"] .text-white\/30 { color: rgb(var(--text-rgb) / .42); }
+        html[data-mode="light"] .text-white\/50 { color: rgb(var(--text-rgb) / .55); }
+        html[data-mode="light"] .text-white\/70 { color: rgb(var(--text-rgb) / .72); }
+        html[data-mode="light"] .hover\:text-white:hover, html[data-mode="light"] .hover\:text-gray-200:hover { color: rgb(var(--text-rgb)); }
+        html[data-mode="light"] .border-white\/5 { border-color: rgb(var(--fg-rgb) / .08); }
+        html[data-mode="light"] .border-white\/10 { border-color: rgb(var(--fg-rgb) / .13); }
+        html[data-mode="light"] .border-white\/20 { border-color: rgb(var(--fg-rgb) / .22); }
+        html[data-mode="light"] .bg-white\/5, html[data-mode="light"] .hover\:bg-white\/5:hover { background-color: rgb(var(--fg-rgb) / .05); }
+        html[data-mode="light"] .bg-white\/10, html[data-mode="light"] .hover\:bg-white\/10:hover { background-color: rgb(var(--fg-rgb) / .09); }
+        html[data-mode="light"] .hover\:bg-white\/20:hover { background-color: rgb(var(--fg-rgb) / .14); }
+        html[data-mode="light"] .bg-black\/50 { background-color: rgb(255 255 255 / .8); }
+        html[data-mode="light"] .bg-black\/40 { background-color: rgb(var(--fg-rgb) / .05); }
+        html[data-mode="light"] .bg-black\/30 { background-color: rgb(255 255 255 / .6); }
+        html[data-mode="light"] nav.bg-black\/80 { background-color: rgb(255 255 255 / .88); }
+        html[data-mode="light"] .text-red-400 { color: #dc2626; }
+        html[data-mode="light"] .text-red-500 { color: #b91c1c; }
+        html[data-mode="light"] .hover\:text-red-300:hover { color: #991b1b; }
+        html[data-mode="light"] ::placeholder { color: rgb(var(--text-rgb) / .45); }
+        /* Pengecualian: elemen yang memang berlatar warna/gelap tetap berteks putih */
+        html[data-mode="light"] .bg-brand-magenta.text-white, html[data-mode="light"] .bg-brand-violet.text-white,
+        html[data-mode="light"] .bg-brand-blue.text-white, html[data-mode="light"] .bg-brand-cyan.text-white,
+        html[data-mode="light"] .bg-black\/70.text-white, html[data-mode="light"] .hover\:bg-red-500:hover,
+        html[data-mode="light"] #loading-overlay .text-white, html[data-mode="light"] #lightbox .text-white,
+        html[data-mode="light"] #lightbox [class*="text-white"], html[data-mode="light"] #video-modal .text-white { color: #fff; }
+        html[data-mode="light"] #lightbox .bg-white\/10, html[data-mode="light"] #video-modal .bg-white\/10 { background-color: rgb(255 255 255 / .12); }
+        html[data-mode="light"] #video-modal .text-gray-400 { color: rgb(255 255 255 / .7); }
+        html[data-mode="light"] #video-modal .text-red-500 { color: #ef4444; }
+
+        /* Tombol & panel tema untuk pengunjung */
+        #sd-fab { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 90; width: 48px; height: 48px; border-radius: 999px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; color: rgb(var(--m-rgb));
+            background: rgb(var(--bg-rgb) / .9); border: 1px solid rgb(var(--m-rgb) / .5); box-shadow: 0 6px 22px rgb(var(--m-rgb) / .28);
+            -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: transform .2s ease; }
+        #sd-fab:active { transform: scale(.94); }
+        #sd-panel { position: fixed; right: 16px; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 91; width: min(304px, calc(100vw - 32px));
+            max-height: calc(100dvh - 110px); overflow: auto; padding: 16px; border-radius: 20px; display: none; color: rgb(var(--text-rgb));
+            background: rgb(var(--bg-rgb) / .97); border: 1px solid rgb(var(--fg-rgb) / .14); box-shadow: 0 24px 60px rgba(0, 0, 0, .4); }
+        #sd-panel.open { display: block; animation: sdPop .18s ease-out; }
+        @keyframes sdPop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+        .sd-h { font-size: 12px; font-weight: 700; color: rgb(var(--text-rgb) / .62); margin: 0 0 8px; }
+        .sd-sec { margin-bottom: 16px; }
+        .sd-sec:last-child { margin-bottom: 0; }
+        .sd-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 14px; background: rgb(var(--fg-rgb) / .07); }
+        .sd-seg button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 8px; border-radius: 10px; font-size: 13px; font-weight: 700; color: rgb(var(--text-rgb) / .72); cursor: pointer; }
+        .sd-seg button[aria-pressed="true"] { background: rgb(var(--m-rgb)); color: #fff; }
+        .sd-swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+        .sd-sw { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 4px 0; font-size: 11px; font-weight: 600; color: rgb(var(--text-rgb) / .7); cursor: pointer; }
+        .sd-dot { width: 34px; height: 34px; border-radius: 999px; outline: 2px solid transparent; outline-offset: 2px; transition: outline-color .2s; }
+        .sd-sw[aria-pressed="true"] { color: rgb(var(--text-rgb)); }
+        .sd-sw[aria-pressed="true"] .sd-dot { outline-color: rgb(var(--text-rgb) / .9); }
+        .sd-auto-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; }
+        .sd-switch { position: relative; width: 44px; height: 26px; border-radius: 999px; background: rgb(var(--fg-rgb) / .2); cursor: pointer; flex: none; transition: background .2s; }
+        .sd-switch i { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0, 0, 0, .35); }
+        .sd-switch[aria-checked="true"] { background: rgb(var(--m-rgb)); }
+        .sd-switch[aria-checked="true"] i { transform: translateX(18px); }
+        .sd-secs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .sd-secs button { padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid rgb(var(--fg-rgb) / .2); color: rgb(var(--text-rgb) / .78); cursor: pointer; }
+        .sd-secs button[aria-pressed="true"] { background: rgb(var(--m-rgb)); border-color: transparent; color: #fff; }
+        #sd-install { display: block; width: 100%; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; color: #fff; background: rgb(var(--v-rgb)); cursor: pointer; }
+        #sd-install[hidden] { display: none; }
+        #sd-panel button:focus-visible, #sd-fab:focus-visible { outline: 2px solid rgb(var(--c-rgb)); outline-offset: 2px; }
+        html.sd-admin #sd-fab, html.sd-admin #sd-panel { display: none !important; }
+        @media (prefers-reduced-motion: reduce) { #sd-panel.open { animation: none; } .sd-switch, .sd-switch i, #sd-fab { transition: none; } }
+    </style>
+</head>
+<body class="antialiased">
+
+<div id="portfolio-app-container">
+
+    <!-- LOADER AWAL: selalu tampil sampai aplikasi siap (tidak bergantung CSS lain) -->
+    <div id="boot-loader" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgb(var(--bg-rgb, 5 8 22));color:rgb(var(--text-rgb, 232 234 255));font-family:Arial,sans-serif;text-align:center;padding:24px;transition:opacity .45s ease">
+        <div style="font-size:46px;font-weight:800;letter-spacing:3px">RK<span style="color:rgb(var(--m-rgb, 255 43 214))">.</span></div>
+        <div id="boot-msg" style="margin-top:12px;font-size:13px;opacity:.7">Memuat portofolio...</div>
+        <div id="boot-err" style="margin-top:14px;font-size:11px;color:#ff8fa3;max-width:340px;word-break:break-word"></div>
+    </div>
+
+    <script>
+        // Blogger di HP memakai template mobile (?m=1) yang sering merusak halaman penuh-layar. Paksa template desktop sekali saja.
+        (function () {
+            try {
+                if (/[?&]m=1(&|$)/.test(location.search) && !sessionStorage.getItem('sd_m0')) {
+                    sessionStorage.setItem('sd_m0', '1');
+                    location.replace(location.href.replace(/([?&])m=1(?=&|#|$)/, '$1m=0'));
+                }
+            } catch (e) {}
+            // Tampilkan error di layar loader (berguna saat dibuka di HP tanpa console)
+            window.addEventListener('error', function (e) {
+                var el = document.getElementById('boot-err');
+                if (el && !window.__appReady) el.textContent = 'Error: ' + (e.message || 'tidak diketahui');
+            });
+            setTimeout(function () {
+                var m = document.getElementById('boot-msg');
+                if (m && !window.__appReady) m.textContent = 'Memuat lebih lama dari biasanya. Periksa koneksi lalu muat ulang halaman.';
+            }, 7000);
+        })();
+        // Penyimpanan browser yang aman (HP/in-app browser tertentu memblokir localStorage dan bisa mematikan seluruh script)
+        const store = {
+            get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+            set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+            del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+        };
+        function appReady() {
+            window.__appReady = true;
+            var b = document.getElementById('boot-loader');
+            if (b) { b.style.opacity = '0'; setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 480); }
+        }
+
+        // URL Apps Script Anda
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbw5lYZVvc-FEnt4sCBDasg_UbVkBK0Zug5S-6kTVz8RFYn03sWMxIXP4yH3BfshTdf1/exec"; 
+        const IS_PREVIEW = false; 
+        let adminToken = store.get('SujatmikoToken') || null;
+        let APP_DATA = null; 
+    </script>
+
+    <div id="layanan-bg" aria-hidden="true">
+        <img id="layanan-bg-img" class="opacity-0" alt="" decoding="async">
+        <div class="lb-dim"></div>
+        <div class="lb-vig"></div>
+        <div class="lb-shine"></div>
+    </div>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="toast" class="fixed top-24 right-5 z-[100] transform transition-transform duration-300 translate-x-full">
+        <div class="glass-panel border-brand-magenta text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+            <i class="fas fa-bell text-brand-magenta"></i>
+            <span id="toast-msg" class="font-semibold text-sm">Notifikasi</span>
+        </div>
+    </div>
+    
+    <!-- TOMBOL & PANEL TEMA (pengunjung) -->
+    <button id="sd-fab" type="button" aria-label="Tampilan dan warna tema" aria-expanded="false" aria-controls="sd-panel"><i class="fas fa-palette"></i></button>
+    <div id="sd-panel" role="dialog" aria-label="Tampilan">
+        <div class="sd-sec">
+            <p class="sd-h">Mode</p>
+            <div class="sd-seg">
+                <button type="button" data-sd-mode="dark" aria-pressed="true"><i class="fas fa-moon"></i>Gelap</button>
+                <button type="button" data-sd-mode="light" aria-pressed="false"><i class="fas fa-sun"></i>Terang</button>
+            </div>
+        </div>
+        <div class="sd-sec">
+            <p class="sd-h">Warna tema</p>
+            <div id="sd-swatches" class="sd-swatches"></div>
+        </div>
+        <div class="sd-sec" id="sd-auto-wrap">
+            <div class="sd-auto-row"><span>Ganti warna otomatis</span><button id="sd-auto" type="button" class="sd-switch" role="switch" aria-checked="false" aria-label="Ganti warna otomatis"><i></i></button></div>
+            <div id="sd-secs" class="sd-secs" hidden></div>
+        </div>
+        <div class="sd-sec"><button id="sd-install" type="button" hidden><i class="fas fa-mobile-screen-button mr-2"></i>Pasang aplikasi di HP</button></div>
+    </div>
+
+    <div id="loading-overlay" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
+        <div class="text-center">
+            <i class="fas fa-circle-notch fa-spin text-5xl text-brand-magenta mb-4"></i>
+            <p class="font-display tracking-widest animate-pulse text-white mt-4">MEMPROSES DATA...</p>
+        </div>
+    </div>
+
+    <!-- ==================== PUBLIC VIEW ==================== -->
+    <div id="public-view" class="w-full flex flex-col min-h-[100dvh] relative">
+        
+        <nav class="glass-nav fixed w-full top-0 z-50 glass-panel border-b border-white/10 transition-all duration-300 bg-brand-bg/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20 relative">
+                    <!-- MENU HP: muncul melebar ke kiri di dalam header -->
+                    <div id="mobile-menu" class="md:hidden" role="menu">
+                        <button class="mm-item hover:text-brand-magenta" data-nav="beranda" onclick="navigate('beranda'); toggleMobileMenu(false)">Beranda</button>
+                        <button class="mm-item hover:text-brand-magenta" data-nav="karya" onclick="navigate('karya'); toggleMobileMenu(false)">Karya</button>
+                        <button class="mm-item hover:text-brand-magenta" data-nav="layanan" onclick="navigate('layanan'); toggleMobileMenu(false)">Layanan</button>
+                        <a class="mm-item" href="https://wa.me/6281241125930" target="_blank" rel="noopener" aria-label="WhatsApp" style="padding:0"><span class="flex items-center justify-center w-9 h-9 rounded-full bg-brand-magenta text-white"><i class="fab fa-whatsapp text-lg"></i></span></a>
+                    </div>
+                    <div class="flex-shrink-0 cursor-pointer text-2xl font-display text-gradient" onclick="navigate('beranda')">RK.</div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8 font-bold">
+                            <button onclick="navigate('beranda')" class="hover:text-brand-magenta transition-colors">Beranda</button>
+                            <button onclick="navigate('karya')" class="hover:text-brand-magenta transition-colors">Karya</button>
+                            <button onclick="navigate('layanan')" class="hover:text-brand-magenta transition-colors">Layanan</button>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center gap-4">
+                        <button onclick="navigate('admin')" class="text-white/30 hover:text-white transition-colors" title="Login Admin"><i class="fas fa-lock"></i></button>
+                        <a href="https://wa.me/6281241125930" target="_blank" class="bg-brand-magenta hover:bg-brand-violet transition-colors text-white px-6 py-2 rounded-full font-bold box-glow">
+                            <i class="fab fa-whatsapp mr-2"></i> Hubungi
+                        </a>
+                    </div>
+                    <div class="md:hidden flex items-center gap-4">
+                        <button onclick="navigate('admin')" class="text-white/30"><i class="fas fa-lock"></i></button>
+                        <button id="mm-toggle" onclick="toggleMobileMenu()" class="text-white p-2 relative z-10" aria-label="Menu" aria-expanded="false">
+                            <i id="mm-icon" class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 pt-24 pb-12 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- VIEW: BERANDA -->
+            <section id="view-beranda" class="view-section active">
+                <div class="min-h-[70vh] flex flex-col-reverse lg:flex-row items-center mt-4">
+                    <div class="w-full lg:w-1/2 text-center lg:text-left mt-10 lg:mt-0 fade-in-scroll">
+                        <span class="font-accent text-3xl text-brand-magenta text-glow block mb-4">Build Something Amazing</span>
+                        <h1 class="title-giant text-6xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6">ROBERT<br><span class="text-gradient">KRISTIAN</span></h1>
+                        <p class="text-xl md:text-2xl text-gray-300 font-light mb-8">IT SOLUTIONS & WEB DEVELOPER</p>
+                        <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                            <button onclick="navigate('karya')" class="glass-panel text-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition-all">Lihat Karya</button>
+                        </div>
+                    </div>
+                    <!-- Hero Image Masking to hide crop marks -->
+                    <div class="w-full lg:w-1/2 relative h-[340px] sm:h-[420px] lg:h-[600px] flex justify-center items-center fade-in-scroll">
+                        <div class="absolute inset-0 hero-glow"></div>
+                        <div class="w-full h-full rounded-[3rem] overflow-hidden relative z-10 hero-frame bg-white/5">
+                            <div id="hero-skel" class="absolute inset-0 shimmer"></div>
+                            <img id="public-hero-img" alt="Robert Kristian" decoding="async" fetchpriority="high" class="absolute inset-0 object-cover w-full h-full scale-110 opacity-0 transition-opacity duration-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bar Statistik -->
+                <div class="mt-20 fade-in-scroll">
+                    <div class="glass-panel rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div><h3 class="text-4xl font-display text-brand-cyan">19+</h3><p class="text-sm text-gray-400">Tahun Pengalaman IT</p></div>
+                        <div><h3 class="text-4xl font-display text-brand-magenta">30+</h3><p class="text-sm text-gray-400">Website Dibangun</p></div>
+                        <div><h3 class="text-4xl font-display text-brand-violet">9</h3><p class="text-sm text-gray-400">Tahun Kepala Lab</p></div>
+                        <div><h3 class="text-4xl font-display text-brand-blue">3.81</h3><p class="text-sm text-gray-400">IPK Kelulusan</p></div>
+                    </div>
+                </div>
+                
+                <!-- Skills Marquee Infinite Loop -->
+                <div class="mt-20 fade-in-scroll">
+                    <div class="marquee-container glass-panel py-6 rounded-xl">
+                        <div class="marquee-content gap-12 px-6 text-4xl text-gray-400">
+                            <!-- SET 1 -->
+                            <i class="fab fa-html5 hover:text-orange-500 transition-colors"></i>
+                            <i class="fab fa-css3-alt hover:text-blue-500 transition-colors"></i>
+                            <i class="fab fa-js hover:text-yellow-400 transition-colors"></i>
+                            <i class="fab fa-react hover:text-cyan-400 transition-colors"></i>
+                            <i class="fab fa-node-js hover:text-green-500 transition-colors"></i>
+                            <i class="fas fa-database hover:text-gray-200 transition-colors"></i>
+                            <i class="fab fa-figma hover:text-pink-500 transition-colors"></i>
+                            <i class="fab fa-wordpress hover:text-blue-400 transition-colors"></i>
+                            <!-- SET 2 -->
+                            <i class="fab fa-html5 hover:text-orange-500 transition-colors ml-12"></i>
+                            <i class="fab fa-css3-alt hover:text-blue-500 transition-colors"></i>
+                            <i class="fab fa-js hover:text-yellow-400 transition-colors"></i>
+                            <i class="fab fa-react hover:text-cyan-400 transition-colors"></i>
+                            <i class="fab fa-node-js hover:text-green-500 transition-colors"></i>
+                            <i class="fas fa-database hover:text-gray-200 transition-colors"></i>
+                            <i class="fab fa-figma hover:text-pink-500 transition-colors"></i>
+                            <i class="fab fa-wordpress hover:text-blue-400 transition-colors"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tentang Saya -->
+                <div class="mt-32 flex flex-col lg:flex-row gap-12 items-center fade-in-scroll">
+                    <!-- Portrait Image Masking to hide crop marks -->
+                    <div class="w-full lg:w-1/3">
+                        <div class="relative rounded-[2rem] overflow-hidden aspect-[4/5] bg-black/50 shadow-2xl border border-white/10">
+                            <img id="public-about-img" alt="Robert Kristian" loading="lazy" decoding="async" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-110 opacity-0">
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-2/3">
+                        <h2 class="title-giant text-4xl mb-6"><span class="text-brand-magenta">//</span> TENTANG SAYA</h2>
+                        <p class="text-lg text-gray-300 leading-relaxed mb-6">Berbasis di Balikpapan. Saya adalah profesional IT dengan pengalaman 19+ tahun. Memadukan keahlian manajerial dengan passion dalam pengembangan website dan solusi digital modern.</p>
+                        <p class="font-accent text-3xl text-brand-violet mb-8">Robert Kristian</p>
+                    </div>
+                </div>
+
+                <!-- Perjalanan Karier & Proses -->
+                <div class="mt-32 grid grid-cols-1 md:grid-cols-2 gap-16">
+                    <div class="fade-in-scroll relative timeline-line">
+                        <h2 class="title-giant text-4xl mb-10"><span class="text-brand-blue">//</span> KARIER</h2>
+                        <div class="pl-12 relative mb-8">
+                            <div class="absolute left-3.5 top-1.5 w-3 h-3 bg-brand-magenta rounded-full shadow-[0_0_10px_rgb(var(--m-rgb))]"></div>
+                            <h4 class="text-xl font-bold">IT Support & Network</h4>
+                            <p class="text-brand-magenta text-sm mb-2">PT Indo Crane Pratama</p>
+                            <p class="text-gray-400 text-sm">Pemeliharaan server dan jaringan infrastruktur.</p>
+                        </div>
+                        <div class="pl-12 relative mb-8">
+                            <div class="absolute left-3.5 top-1.5 w-3 h-3 bg-brand-violet rounded-full"></div>
+                            <h4 class="text-xl font-bold">Kepala Laboratorium</h4>
+                            <p class="text-brand-violet text-sm mb-2">SMK / SMA Negeri Balikpapan</p>
+                            <p class="text-gray-400 text-sm">Manajemen lab komputer dan pelatihan selama 9 tahun.</p>
+                        </div>
+                        <div class="pl-12 relative mb-8">
+                            <div class="absolute left-3.5 top-1.5 w-3 h-3 bg-brand-cyan rounded-full"></div>
+                            <h4 class="text-xl font-bold">Teknisi Komputer</h4>
+                            <p class="text-brand-cyan text-sm mb-2">Benthenk Komputer & Patra Niaga</p>
+                            <p class="text-gray-400 text-sm">Perbaikan hardware dan instalasi software dasar.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in-scroll">
+                        <h2 class="title-giant text-4xl mb-10"><span class="text-brand-violet">//</span> PROSES KERJA</h2>
+                        <div class="space-y-4">
+                            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 hover:-translate-y-1 transition-transform">
+                                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-brand-magenta">1</div>
+                                <div><h4 class="font-bold">Diskusi & Analisa</h4><p class="text-xs text-gray-400">Memahami kebutuhan spesifik Anda.</p></div>
+                            </div>
+                            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 hover:-translate-y-1 transition-transform">
+                                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-brand-violet">2</div>
+                                <div><h4 class="font-bold">Desain UI/UX</h4><p class="text-xs text-gray-400">Merancang tampilan yang modern.</p></div>
+                            </div>
+                            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 hover:-translate-y-1 transition-transform">
+                                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-brand-blue">3</div>
+                                <div><h4 class="font-bold">Development</h4><p class="text-xs text-gray-400">Proses coding dengan teknologi terkini.</p></div>
+                            </div>
+                            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 hover:-translate-y-1 transition-transform">
+                                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-brand-cyan">4</div>
+                                <div><h4 class="font-bold">Testing & Rilis</h4><p class="text-xs text-gray-400">Uji coba dan publikasi ke internet.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: KARYA -->
+            <section id="view-karya" class="view-section">
+                <div class="text-center mb-16 fade-in-scroll">
+                    <h2 class="title-giant text-5xl md:text-7xl mb-4">PORT<span class="text-brand-magenta">FOLIO</span></h2>
+                    <p class="text-xl text-gray-400">Kumpulan karya digital yang telah saya bangun.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in-scroll" id="karya-grid">
+                    <div class="glass-panel rounded-2xl h-64 animate-pulse bg-white/5 border border-white/10 flex items-center justify-center text-gray-500">Mengambil Data...</div>
+                </div>
+            </section>
+
+            <!-- VIEW: LAYANAN (DYNAMIC) -->
+            <section id="view-layanan" class="view-section">
+                <div class="text-center mb-16 fade-in-scroll">
+                    <h2 class="title-giant text-5xl md:text-7xl mb-4">LAYA<span class="text-brand-blue">NAN</span></h2>
+                    <p class="text-xl text-gray-400">Solusi teknologi end-to-end untuk kebutuhan Anda.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in-scroll" id="layanan-grid">
+                    <div class="glass-panel rounded-2xl h-64 animate-pulse bg-white/5 flex items-center justify-center text-gray-500">Memuat Layanan...</div>
+                </div>
+            </section>
+
+        </main>
+        
+         <!-- FOOTER CUSTOM KRESNA STYLE -->
+        <footer class="border-t border-white/5 py-16 text-center mt-auto bg-black/40 backdrop-blur-lg relative z-10">
+            <div class="flex items-center justify-center gap-1 mb-3 font-display text-4xl tracking-widest text-white">
+                RK<span class="text-brand-magenta">.</span>
+            </div>
+            <p class="text-lg font-semibold text-gray-300">
+                Created by <span class="text-brand-blue">Sujatmiko Dev</span>
+            </p>
+            <div class="mt-6 flex justify-center gap-6 text-2xl mb-10">
+                <a href="https://wa.me/6281241125930" target="_blank" class="text-gray-400 hover:text-[#25D366] transition-transform hover:scale-110"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/Sujatmiko2206" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition-transform hover:scale-110"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-sm text-gray-500 leading-relaxed">
+                &copy; 2026 Portofolio SujatmikoDev Balikpapan.<br>All Rights Reserved.
+                <!-- FOOTER CUSTOM <button onclick="navigate('admin')" class="opacity-20 hover:opacity-100 transition-opacity ml-2 outline-none" title="Admin Panel"><i class="fas fa-terminal"></i></button> KRESNA STYLE -->
+            </p>
+        </footer>
+    </div>
+
+    <!-- ==================== ADMIN VIEW ==================== -->
+    <div id="admin-view" class="hidden min-h-[100dvh] w-full flex-col relative z-50 glass-panel !bg-brand-bg/95">
+        
+        <!-- Login Form -->
+        <div id="admin-login" class="flex flex-1 items-center justify-center p-4">
+            <div class="glass-panel p-10 rounded-[2rem] shadow-2xl w-full max-w-sm text-center border-brand-magenta/30 relative">
+                <button onclick="navigate('beranda')" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                <div class="w-16 h-16 bg-brand-magenta/20 text-brand-magenta rounded-full flex items-center justify-center text-2xl mx-auto mb-6"><i class="fas fa-lock"></i></div>
+                <h2 class="text-2xl font-display mb-8 text-white">System Admin</h2>
+                <input type="password" id="admin-pass" placeholder="" class="w-full p-4 rounded-xl bg-black/50 border border-white/10 mb-6 text-center text-white focus:border-brand-magenta outline-none text-2xl tracking-widest">
+                <button onclick="loginAdmin()" class="bg-brand-magenta text-white w-full py-4 rounded-xl font-bold box-glow hover:bg-brand-violet transition-colors">Login CMS</button>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="admin-dashboard" class="hidden flex-col flex-1 w-full">
+            <nav class="bg-black/80 border-b border-white/10 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-xl">
+                <div class="font-bold text-lg font-display tracking-wider"><span class="text-brand-magenta">RK.</span> CMS</div>
+                <div class="flex gap-4">
+                    <button onclick="logoutAdmin()" class="text-sm font-semibold text-red-400 hover:text-red-300">Logout</button>
+                    <button onclick="navigate('beranda')" class="text-sm bg-white/10 px-4 py-2 rounded-lg font-bold hover:bg-white hover:text-black transition-colors">Tutup</button>
+                </div>
+            </nav>
+            
+            <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+                <!-- Sidebar -->
+                <div class="w-full md:w-64 glass-panel border-r border-white/5 p-4 flex md:flex-col gap-2 overflow-x-auto shrink-0 z-10">
+                    <button id="tab-btn-karya" onclick="switchAdminTab('karya')" class="admin-tab-btn text-left px-4 py-3 rounded-xl bg-brand-magenta text-white font-bold whitespace-nowrap transition-colors">
+                        <i class="fas fa-images w-6"></i> Data Karya
+                    </button>
+                    <button id="tab-btn-layanan" onclick="switchAdminTab('layanan')" class="admin-tab-btn text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 font-semibold whitespace-nowrap transition-colors">
+                        <i class="fas fa-laptop-code w-6"></i> Data Layanan
+                    </button>
+                    <button id="tab-btn-pengaturan" onclick="switchAdminTab('pengaturan')" class="admin-tab-btn text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 font-semibold whitespace-nowrap transition-colors">
+                        <i class="fas fa-cog w-6"></i> Pengaturan
+                    </button>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
+                    
+                    <!-- TAB KARYA -->
+                    <div id="tab-content-karya" class="admin-tab-content">
+                        <h2 class="text-2xl font-bold mb-4 text-white">Tambah Data Karya</h2>
+                        <div class="glass-panel p-6 rounded-2xl mb-12 max-w-3xl border-t border-brand-magenta/50">
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Judul Karya</label>
+                                    <input type="text" id="karya-judul" placeholder="Contoh: Web Portal Warga" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-magenta text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Kategori</label>
+                                    <select id="karya-kategori" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-magenta text-white">
+                                        <option value="Website">Website</option>
+                                        <option value="Desain">Desain Konten</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-xs text-gray-400 mb-1">Link URL Proyek <span class="text-[10px] text-brand-magenta">(Opsional)</span></label>
+                                <input type="url" id="karya-link" placeholder="https://..." class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-magenta text-white">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-xs text-gray-400 mb-1">Deskripsi Singkat</label>
+                                <textarea id="karya-deskripsi" rows="3" placeholder="Jelaskan fitur utama proyek ini..." class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-magenta text-white resize-none"></textarea>
+                            </div>
+
+                            <div class="mb-6 p-4 rounded-xl border border-dashed border-white/20 bg-white/5">
+                                <label class="block text-sm font-bold text-white mb-3"><i class="fas fa-cloud-upload-alt mr-2"></i>Upload Screenshot (Min. 1, Max 3)</label>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-[10px] text-brand-magenta mb-1 font-bold">GAMBAR 1 (Utama)</label>
+                                        <input type="file" id="karya-file1" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-magenta/20 file:text-brand-magenta">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-gray-400 mb-1 font-bold">GAMBAR 2</label>
+                                        <input type="file" id="karya-file2" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-gray-400 mb-1 font-bold">GAMBAR 3</label>
+                                        <input type="file" id="karya-file3" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="simpanKaryaReal()" class="bg-brand-blue hover:bg-brand-violet transition-colors text-white px-6 py-3 rounded-lg font-bold w-full shadow-lg">Upload & Simpan Data</button>
+                        </div>
+
+                        <!-- Daftar Karya List -->
+                        <h2 class="text-xl font-bold mb-4 text-white">Daftar Karya Tersimpan</h2>
+                        <div class="glass-panel rounded-xl overflow-hidden max-w-5xl overflow-x-auto">
+                            <table class="w-full text-left text-sm text-gray-300 whitespace-nowrap">
+                                <thead class="bg-white/5 border-b border-white/10">
+                                    <tr><th class="p-4">Judul</th><th class="p-4">Kategori</th><th class="p-4 text-center">Aksi</th></tr>
+                                </thead>
+                                <tbody id="admin-table-karya">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB LAYANAN -->
+                    <div id="tab-content-layanan" class="admin-tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-4 text-white">Tambah Data Layanan</h2>
+                        <div class="glass-panel p-6 rounded-2xl mb-12 max-w-2xl border-t border-brand-cyan/50">
+                            <div class="mb-4">
+                                <label class="block text-xs text-gray-400 mb-1">Nama Layanan (Maks 3 kata)</label>
+                                <input type="text" id="lay-nama" placeholder="Cth: Pemasangan CCTV" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-cyan text-white">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-xs text-gray-400 mb-1">Pilih Icon (semua gratis & pasti tampil)</label>
+                                <input type="text" id="icon-search" placeholder="Cari icon: cctv, jaringan, video, desain..." oninput="filterIcons()" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 outline-none focus:border-brand-cyan text-white mb-2 text-sm">
+                                <div id="icon-picker" class="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-44 overflow-y-auto p-2 bg-black/30 rounded-lg border border-white/10"></div>
+                                <div class="flex items-center gap-3 mt-3">
+                                    <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl text-brand-cyan"><i id="icon-preview" class="fas fa-circle-check"></i></div>
+                                    <input type="text" id="lay-icon" placeholder="atau ketik manual, cth: fas fa-video" oninput="onIconInput()" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-4 py-2 outline-none focus:border-brand-cyan text-white text-sm">
+                                </div>
+                                <p class="text-[10px] text-gray-500 mt-1">*Icon yang berstatus Pro otomatis diganti ikon cadangan agar tidak kosong.</p>
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-xs text-gray-400 mb-1">Deskripsi Singkat</label>
+                                <textarea id="lay-desc" rows="3" placeholder="Jelaskan cakupan layanan ini..." class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-cyan text-white resize-none"></textarea>
+                            </div>
+                            <button onclick="simpanLayanan()" class="bg-brand-cyan hover:bg-brand-blue transition-colors text-white px-6 py-3 rounded-lg font-bold w-full shadow-lg text-black">Simpan Layanan</button>
+                        </div>
+
+                        <h2 class="text-xl font-bold mb-4 text-white">Daftar Layanan Tersimpan</h2>
+                        <div class="glass-panel rounded-xl overflow-hidden max-w-4xl overflow-x-auto">
+                            <table class="w-full text-left text-sm text-gray-300 whitespace-nowrap">
+                                <thead class="bg-white/5 border-b border-white/10">
+                                    <tr><th class="p-4 w-12">Icon</th><th class="p-4">Nama</th><th class="p-4 text-center">Aksi</th></tr>
+                                </thead>
+                                <tbody id="admin-table-layanan">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB PENGATURAN -->
+                    <div id="tab-content-pengaturan" class="admin-tab-content hidden">
+                        <h2 class="text-3xl font-bold mb-6 text-white">Pengaturan Sistem</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
+                            <!-- Ganti Hero -->
+                            <div class="glass-panel p-6 rounded-2xl border-t border-brand-violet/50">
+                                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-image text-brand-violet mr-2"></i>Gambar Beranda (Hero)</h3>
+                                <p class="text-xs text-gray-400 mb-4">Gambar/Foto utama yang muncul paling besar di halaman Beranda. Rekomendasi PNG Transparan.</p>
+                                <input type="file" id="hero-file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-violet/20 file:text-brand-violet mb-4">
+                                <button onclick="simpanHero()" class="bg-brand-violet hover:bg-brand-magenta text-white px-4 py-2 rounded-lg font-bold w-full transition-colors">Terapkan Gambar Beranda</button>
+                            </div>
+
+                            <!-- Ganti Gambar Tentang Saya -->
+                            <div class="glass-panel p-6 rounded-2xl border-t border-brand-blue/50">
+                                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-portrait text-brand-blue mr-2"></i>Gambar Tentang Saya (Portrait)</h3>
+                                <p class="text-xs text-gray-400 mb-4">Gambar foto profil (bentuk portrait) yang ada di bagian Tentang Saya.</p>
+                                <input type="file" id="about-file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-blue/20 file:text-brand-blue mb-4">
+                                <button onclick="simpanAbout()" class="bg-brand-blue hover:bg-brand-magenta text-white px-4 py-2 rounded-lg font-bold w-full transition-colors">Terapkan Gambar Profil</button>
+                            </div>
+
+                            <!-- Background Layanan -->
+                            <div class="glass-panel p-6 rounded-2xl border-t border-amber-400/50">
+                                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-wand-magic-sparkles text-amber-300 mr-2"></i>Background Menu Layanan</h3>
+                                <p class="text-xs text-gray-400 mb-4">Gambar landscape (16:9) yang tampil di belakang halaman Layanan dengan animasi zoom pelan dan kilau tipis. Otomatis digelapkan agar tulisan tetap terbaca.</p>
+                                <input type="file" id="laybg-file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-400/20 file:text-amber-300 mb-4">
+                                <div class="mb-4">
+                                    <label class="block text-xs text-gray-400 mb-1">Kegelapan overlay: <span id="lay-dim-val" class="text-amber-300 font-bold">78%</span></label>
+                                    <input type="range" id="lay-dim-range" min="55" max="92" value="78" oninput="previewDim(this.value)" onchange="simpanLayDim(this.value)" class="w-full accent-amber-400">
+                                    <p class="text-[10px] text-gray-500 mt-1">Makin tinggi = tulisan makin jelas, gambar makin redup.</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="simpanLayBg()" class="flex-1 bg-amber-500/80 hover:bg-amber-400 text-black px-4 py-2 rounded-lg font-bold transition-colors">Terapkan Background</button>
+                                    <button onclick="hapusLayBg()" class="px-4 py-2 rounded-lg font-bold text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white transition-colors" title="Hapus background"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Tema Warna Situs -->
+                            <div class="glass-panel p-6 rounded-2xl border-t border-brand-cyan/50">
+                                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-palette text-brand-cyan mr-2"></i>Tema Warna Situs</h3>
+                                <p class="text-xs text-gray-400 mb-4">Tema bawaan untuk pengunjung baru. Pengunjung tetap bisa memilih sendiri lewat tombol palet di pojok kanan bawah, dan yang sudah memilih sendiri tidak ikut berubah.</p>
+                                <label class="block text-xs text-gray-400 mb-1" for="th-default">Tema bawaan</label>
+                                <select id="th-default" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-cyan text-white mb-4"></select>
+                                <label class="flex items-center gap-3 mb-3 text-sm text-gray-300 cursor-pointer"><input type="checkbox" id="th-auto" class="w-4 h-4 accent-brand-magenta"> Ganti warna otomatis</label>
+                                <label class="block text-xs text-gray-400 mb-1" for="th-sec">Jeda antar pergantian</label>
+                                <select id="th-sec" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-brand-cyan text-white mb-4">
+                                    <option value="5">5 detik</option><option value="10">10 detik</option><option value="15">15 detik</option><option value="30">30 detik</option><option value="60">60 detik</option>
+                                </select>
+                                <button onclick="simpanTemaSitus()" class="bg-brand-cyan hover:bg-brand-blue transition-colors text-white px-4 py-2 rounded-lg font-bold w-full">Simpan Tema</button>
+                            </div>
+
+                            <!-- Ganti Password -->
+                            <div class="glass-panel p-6 rounded-2xl border-t border-red-500/50">
+                                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-key text-red-400 mr-2"></i>Ganti Password Admin</h3>
+                                <div class="mb-3">
+                                    <label class="block text-xs text-gray-400 mb-1">Password Lama</label>
+                                    <input type="password" id="old-pwd" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 outline-none focus:border-red-400 text-white">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-xs text-gray-400 mb-1">Password Baru</label>
+                                    <input type="password" id="new-pwd" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 outline-none focus:border-red-400 text-white">
+                                </div>
+                                <button onclick="simpanPassword()" class="bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white px-4 py-2 rounded-lg font-bold w-full transition-colors">Perbarui Password</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO POP-UP (YouTube tetap di dalam web) -->
+    <div id="video-modal" class="fixed inset-0 z-[160] bg-black/90 items-center justify-center p-4" style="display:none" onclick="closeVideo()">
+        <button class="absolute top-4 right-4 text-white text-2xl w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 z-10" onclick="closeVideo()" aria-label="Tutup video"><i class="fas fa-xmark"></i></button>
+        <div id="video-box" class="w-full max-w-3xl" onclick="event.stopPropagation()">
+            <div id="video-frame-wrap" class="relative w-full rounded-2xl overflow-hidden bg-black shadow-2xl" style="aspect-ratio:16/9;box-shadow:0 0 60px rgb(var(--m-rgb) / .25)"></div>
+            <div class="text-center mt-3"><a id="video-yt-link" href="#" target="_blank" rel="noopener" class="text-xs text-gray-400 hover:text-white"><i class="fab fa-youtube text-red-500 mr-1"></i>Video tidak muncul? Buka di YouTube</a></div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 z-[150] bg-black/90 items-center justify-center p-4" onclick="closeLightbox()">
+        <button class="absolute top-5 right-5 text-white text-2xl w-10 h-10 rounded-full bg-white/10" onclick="closeLightbox()" aria-label="Tutup"><i class="fas fa-times"></i></button>
+        <button class="absolute left-3 top-1/2 -translate-y-1/2 text-white text-xl w-10 h-10 rounded-full bg-white/10" onclick="event.stopPropagation(); lbStep(-1)" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xl w-10 h-10 rounded-full bg-white/10" onclick="event.stopPropagation(); lbStep(1)" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+        <img id="lb-img" class="max-w-full max-h-[85vh] rounded-xl object-contain" onclick="event.stopPropagation()" alt="">
+        <div id="lb-count" class="absolute bottom-5 left-0 right-0 text-center text-white/70 text-sm"></div>
+    </div>
+
+    <!-- LOGIKA TEMA, PANEL PENGUNJUNG, DAN PWA -->
+    <script>
+        (function () {
+            var T = window.SD_THEMES;
+            var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var st = { id: window.sdCur.id, mode: window.sdCur.mode, auto: false, sec: 10 };
+            var timer = null, ownerSig = '';
+            function clamp(n) { n = parseInt(n, 10); if (!n) return 10; return Math.min(120, Math.max(5, n)); }
+            function $(id) { return document.getElementById(id); }
+
+            if (store.get('sd_chosen') === '1') {
+                st.auto = store.get('sd_auto') === '1';
+                st.sec = clamp(store.get('sd_sec'));
+            }
+
+            // ---- tampilan panel
+            function renderPanel() {
+                document.querySelectorAll('[data-sd-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.sdMode === st.mode)); });
+                $('sd-swatches').innerHTML = T.map(function (t) {
+                    var p = st.mode === 'light' ? t.l : t.d;
+                    return '<button type="button" class="sd-sw" data-sd-theme="' + t.id + '" aria-pressed="' + (t.id === st.id) + '" aria-label="Tema ' + t.name + '">' +
+                        '<span class="sd-dot" style="background:linear-gradient(135deg,' + p.m + ',' + p.v + ' 55%,' + p.b + ')"></span>' + t.name + '</button>';
+                }).join('');
+                var wrap = $('sd-auto-wrap');
+                wrap.style.display = reduce ? 'none' : '';
+                $('sd-auto').setAttribute('aria-checked', String(st.auto));
+                var secsBox = $('sd-secs');
+                secsBox.hidden = !st.auto;
+                var list = [5, 10, 30, 60];
+                if (list.indexOf(st.sec) < 0) { list.push(st.sec); list.sort(function (a, b) { return a - b; }); }
+                secsBox.innerHTML = list.map(function (s) { return '<button type="button" data-sd-sec="' + s + '" aria-pressed="' + (s === st.sec) + '">' + s + ' dtk</button>'; }).join('');
+            }
+
+            // ---- aksi
+            function markChosen() { store.set('sd_chosen', '1'); store.set('sd_auto', st.auto ? '1' : '0'); store.set('sd_sec', String(st.sec)); }
+            function setTheme(id, user) {
+                st.id = id;
+                window.sdApply(id, st.mode, true);
+                if (user) { markChosen(); store.set('sd_theme', id); }
+                renderPanel();
+            }
+            function setMode(mode) {
+                st.mode = mode;
+                store.set('sd_mode', mode);
+                window.sdApply(st.id, mode, true);
+                renderPanel();
+            }
+            function tick() {
+                if (document.hidden) return;
+                var i = 0;
+                for (var k = 0; k < T.length; k++) if (T[k].id === st.id) i = k;
+                st.id = T[(i + 1) % T.length].id;
+                window.sdApply(st.id, st.mode, true);
+                if (store.get('sd_chosen') === '1') store.set('sd_theme', st.id);
+                renderPanel();
+            }
+            function startTimer() {
+                if (timer) { clearInterval(timer); timer = null; }
+                if (st.auto && !reduce) timer = setInterval(tick, st.sec * 1000);
+            }
+            function setAuto(on) { st.auto = on; markChosen(); renderPanel(); startTimer(); }
+            function setSec(n) { st.sec = clamp(n); markChosen(); renderPanel(); startTimer(); }
+
+            // ---- buka/tutup panel
+            var fab = $('sd-fab'), panel = $('sd-panel');
+            function openPanel(on) {
+                panel.classList.toggle('open', on);
+                fab.setAttribute('aria-expanded', String(on));
+                fab.innerHTML = on ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-palette"></i>';
+            }
+            fab.addEventListener('click', function (e) { e.stopPropagation(); openPanel(!panel.classList.contains('open')); });
+            panel.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var b = e.target.closest('button'); if (!b) return;
+                if (b.dataset.sdMode) setMode(b.dataset.sdMode);
+                else if (b.dataset.sdTheme) setTheme(b.dataset.sdTheme, true);
+                else if (b.id === 'sd-auto') setAuto(!st.auto);
+                else if (b.dataset.sdSec) setSec(b.dataset.sdSec);
+                else if (b.id === 'sd-install') installApp();
+            });
+            document.addEventListener('click', function () { if (panel.classList.contains('open')) openPanel(false); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('open')) { openPanel(false); fab.focus(); } });
+
+            // ---- tema bawaan dari pemilik (Sheet Config: THEME_DEFAULT, THEME_AUTO, THEME_INTERVAL)
+            function cfgVal(config, k) { var c = config.find(function (x) { return x.key === k; }); return (c && c.value !== '' && c.value != null) ? String(c.value) : ''; }
+            window.sdApplyOwnerTheme = function (config, force) {
+                var did = cfgVal(config, 'THEME_DEFAULT'), au = cfgVal(config, 'THEME_AUTO'), sec = cfgVal(config, 'THEME_INTERVAL');
+                if ($('th-default')) { if (sdFind(did)) $('th-default').value = did; $('th-auto').checked = (au === '1' || au.toLowerCase() === 'true'); if (sec) $('th-sec').value = String(clamp(sec)); }
+                if (store.get('sd_chosen') === '1') return;
+                var sig = did + '|' + au + '|' + sec;
+                if (!force && sig === ownerSig) return;
+                ownerSig = sig;
+                if (sdFind(did)) { st.id = did; window.sdApply(did, st.mode, false); }
+                st.auto = (au === '1' || au.toLowerCase() === 'true');
+                st.sec = clamp(sec);
+                renderPanel(); startTimer();
+            };
+
+            // ---- admin: simpan tema bawaan
+            window.simpanTemaSitus = async function () {
+                if (IS_PREVIEW) return showToast('Matikan IS_PREVIEW');
+                var id = $('th-default').value, au = $('th-auto').checked ? '1' : '0', sec = $('th-sec').value;
+                setLoad(true);
+                var r1 = await fetchAPI('updateConfig', { key: 'THEME_DEFAULT', value: id });
+                var r2 = await fetchAPI('updateConfig', { key: 'THEME_AUTO', value: au });
+                var r3 = await fetchAPI('updateConfig', { key: 'THEME_INTERVAL', value: String(sec) });
+                setLoad(false);
+                if (r1.status === 'success' && r2.status === 'success' && r3.status === 'success') {
+                    showToast('Tema situs disimpan');
+                    ['sd_chosen', 'sd_theme', 'sd_auto', 'sd_sec'].forEach(function (k) { store.del(k); });
+                    window.sdApplyOwnerTheme([{ key: 'THEME_DEFAULT', value: id }, { key: 'THEME_AUTO', value: au }, { key: 'THEME_INTERVAL', value: sec }], true);
+                } else showToast('Gagal menyimpan tema');
+            };
+
+            // ---- PWA: tombol pasang aplikasi + service worker
+            var deferred = null;
+            window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; $('sd-install').hidden = false; });
+            window.addEventListener('appinstalled', function () { deferred = null; $('sd-install').hidden = true; });
+            function installApp() { if (!deferred) return; deferred.prompt(); deferred.userChoice.then(function () { deferred = null; $('sd-install').hidden = true; }); }
+            if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+                window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+            }
+
+            // ---- isi pilihan di admin & mulai
+            if ($('th-default')) $('th-default').innerHTML = T.map(function (t) { return '<option value="' + t.id + '">' + t.name + '</option>'; }).join('');
+            renderPanel(); startTimer();
+        })();
+    </script>
+
+    <!-- MAIN LOGIC -->
+    <script>
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => { toast.classList.add('translate-x-full'); }, 3000);
+        }
+
+        function setLoad(state) {
+            document.getElementById('loading-overlay').style.display = state ? 'flex' : 'none';
+        }
+
+        // --- SPA NAVIGATION ---
+        function navigate(hash) { window.location.hash = hash; }
+
+        // --- MENU HP (melebar ke kiri di header) ---
+        function toggleMobileMenu(force) {
+            const m = document.getElementById('mobile-menu'); if (!m) return;
+            const open = (typeof force === 'boolean') ? force : !m.classList.contains('open');
+            m.classList.toggle('open', open);
+            const ic = document.getElementById('mm-icon'); if (ic) ic.className = (open ? 'fas fa-xmark' : 'fas fa-bars') + ' text-xl';
+            const b = document.getElementById('mm-toggle'); if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        document.addEventListener('click', e => {
+            const m = document.getElementById('mobile-menu');
+            if (m && m.classList.contains('open') && !m.contains(e.target) && !e.target.closest('#mm-toggle')) toggleMobileMenu(false);
+        });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMobileMenu(false); });
+        document.getElementById('portfolio-app-container').addEventListener('scroll', () => {
+            const m = document.getElementById('mobile-menu'); if (m && m.classList.contains('open')) toggleMobileMenu(false);
+        }, { passive: true });
+
+        function route() {
+            let hash = window.location.hash.replace('#', '');
+            if (!hash) hash = 'beranda';
+            
+            toggleMobileMenu(false);
+            document.documentElement.classList.toggle('sd-admin', hash === 'admin');
+            document.querySelectorAll('#mobile-menu [data-nav]').forEach(b => b.classList.toggle('text-brand-magenta', b.dataset.nav === hash));
+            const container = document.getElementById('portfolio-app-container');
+
+            if (hash === 'admin') {
+                document.getElementById('public-view').classList.add('hidden');
+                document.getElementById('admin-view').classList.remove('hidden');
+                document.getElementById('admin-view').classList.add('flex');
+                container.scrollTo(0,0);
+                toggleLayBg(false);
+                checkAdminLogin();
+            } else {
+                document.getElementById('admin-view').classList.add('hidden');
+                document.getElementById('admin-view').classList.remove('flex');
+                document.getElementById('public-view').classList.remove('hidden');
+                document.getElementById('public-view').classList.add('flex');
+                toggleLayBg(hash === 'layanan');
+                
+                document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                const target = document.getElementById(`view-${hash}`);
+                if (target) {
+                    target.classList.add('active');
+                    container.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }
+        window.addEventListener('hashchange', route);
+
+        // --- ADMIN TABS ---
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(el => {
+                el.classList.remove('bg-brand-magenta', 'text-white');
+                el.classList.add('hover:bg-white/5', 'text-gray-400');
+            });
+            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
+            const btn = document.getElementById(`tab-btn-${tabId}`);
+            btn.classList.remove('hover:bg-white/5', 'text-gray-400');
+            btn.classList.add('bg-brand-magenta', 'text-white');
+        }
+
+        // --- UI EFFECTS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+        }, { threshold: 0, rootMargin: '0px 0px 250px 0px', root: document.getElementById('portfolio-app-container') });
+
+        document.querySelectorAll('.fade-in-scroll').forEach(el => observer.observe(el));
+
+        function initParticles() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for (let i = 0; i < 30; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 2 + 1,
+                    dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5,
+                    k: Math.floor(Math.random() * 3)
+                });
+            }
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.dx; p.y += p.dy;
+                    if (p.x < 0 || p.x > canvas.width) p.dx = -p.dx;
+                    if (p.y < 0 || p.y > canvas.height) p.dy = -p.dy;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = window.sdColors()[p.k]; ctx.globalAlpha = 0.3; ctx.fill();
+                });
+            }
+            animate();
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        }
+
+        // --- HELPER GAMBAR (rantai fallback: thumbnail -> lh3 -> uc -> placeholder) ---
+        const PH_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b0f3a"/><stop offset="1" stop-color="#0a1a4a"/></linearGradient></defs><rect width="800" height="500" fill="url(#g)"/><circle cx="400" cy="250" r="46" fill="none" stroke="#ff2bd6" stroke-width="4" opacity=".6"/><path d="M380 262l16-20 14 16 10-12 20 28z" fill="#7a3cff" opacity=".7"/></svg>');
+        function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function driveId(url) { if (!url) return null; const m = String(url).match(/[?&]id=([^&]+)/) || String(url).match(/\/d\/([^/?]+)/); return m ? m[1] : null; }
+        function imgCandidates(url, w) {
+            const id = driveId(url);
+            if (!id) return url ? [url] : [];
+            return [`https://drive.google.com/thumbnail?id=${id}&sz=w${w}`, `https://lh3.googleusercontent.com/d/${id}=w${w}`, `https://drive.google.com/uc?export=view&id=${id}`];
+        }
+        function getDriveImageUrl(url, size = 'w1000') { const w = parseInt(String(size).replace(/\D/g, '')) || 1000; return imgCandidates(url, w)[0] || ''; }
+
+        // Pasang gambar tunggal (hero / tentang): skeleton -> fade-in, fallback otomatis
+        function setImg(el, url, w) {
+            if (!el) return;
+            if (el.dataset.cur === String(url)) return;
+            el.dataset.cur = String(url);
+            const list = imgCandidates(url, w);
+            const done = () => { el.classList.remove('opacity-0'); const sk = el.previousElementSibling; if (sk && sk.classList.contains('shimmer')) sk.remove(); };
+            if (!list.length) { el.onload = done; el.src = PH_SVG; return; }
+            let i = 0;
+            el.onload = done;
+            el.onerror = () => { i++; if (i < list.length) el.src = list[i]; else { el.onerror = null; el.src = PH_SVG; } };
+            el.src = list[0];
+        }
+
+        // Fallback untuk <img data-raw=...> (kartu karya & lightbox)
+        document.addEventListener('error', e => {
+            const el = e.target;
+            if (!(el instanceof HTMLImageElement) || !el.dataset.raw) return;
+            const list = imgCandidates(el.dataset.raw, +el.dataset.w || 800);
+            const n = (+el.dataset.n || 0) + 1;
+            el.dataset.n = n;
+            if (n < list.length) el.src = list[n]; else { el.removeAttribute('data-raw'); el.src = PH_SVG; }
+        }, true);
+
+        // --- ICON FONTAWESOME: hanya yang FREE ---
+        const ICON_LIST = [
+            ['fas fa-laptop-code','web website kode developer aplikasi'],['fas fa-code','kode program coding'],['fas fa-server','server hosting'],['fas fa-database','database data'],
+            ['fas fa-network-wired','jaringan network lan'],['fas fa-wifi','wifi internet'],['fas fa-ethernet','kabel lan jaringan'],['fas fa-sitemap','struktur jaringan'],['fas fa-tower-broadcast','sinyal radio'],['fas fa-satellite-dish','antena parabola'],
+            ['fas fa-video','cctv video kamera'],['fas fa-camera','kamera foto'],['fas fa-camera-retro','kamera foto'],['fas fa-film','film video editing'],['fas fa-clapperboard','video editing film'],['fas fa-photo-film','foto video media'],
+            ['fas fa-shield-halved','keamanan security'],['fas fa-lock','kunci aman'],['fas fa-key','kunci password'],
+            ['fas fa-computer','komputer pc'],['fas fa-desktop','komputer monitor'],['fas fa-laptop','laptop notebook'],['fas fa-tablet-screen-button','tablet'],['fas fa-mobile-screen','hp smartphone'],['fas fa-tv','tv layar'],
+            ['fas fa-microchip','chip prosesor hardware'],['fas fa-memory','ram memori'],['fas fa-hard-drive','harddisk ssd'],['fas fa-keyboard','keyboard'],['fas fa-computer-mouse','mouse'],['fas fa-print','printer cetak'],['fas fa-usb','usb flashdisk'],['fas fa-plug','listrik colokan'],['fas fa-battery-full','baterai'],
+            ['fas fa-screwdriver-wrench','servis perbaikan service'],['fas fa-wrench','kunci pas servis'],['fas fa-gears','mesin sistem setting'],['fas fa-toolbox','peralatan toolbox'],['fas fa-bug','bug virus error'],['fas fa-headset','support bantuan cs'],
+            ['fas fa-palette','desain warna grafis'],['fas fa-paintbrush','desain kuas lukis'],['fas fa-pen-nib','desain logo pena'],['fas fa-vector-square','vektor desain'],['fas fa-layer-group','layer desain'],['fas fa-scissors','potong edit'],['fas fa-image','gambar'],
+            ['fas fa-bullhorn','iklan promosi marketing sosmed'],['fas fa-chart-line','grafik naik statistik'],['fas fa-chart-pie','grafik pie'],['fas fa-share-nodes','bagikan sosial media'],['fas fa-comments','chat komentar'],['fas fa-thumbs-up','suka like'],['fas fa-newspaper','berita artikel'],
+            ['fas fa-music','musik audio lagu'],['fas fa-microphone','mikrofon podcast rekaman'],['fas fa-headphones','headphone audio'],['fas fa-compact-disc','cd musik'],
+            ['fas fa-graduation-cap','pendidikan kursus belajar'],['fas fa-book','buku'],['fas fa-school','sekolah'],['fas fa-chalkboard-user','mengajar pelatihan'],['fas fa-language','bahasa'],
+            ['fas fa-rocket','roket cepat launching'],['fas fa-lightbulb','ide kreatif'],['fas fa-bolt','cepat kilat'],['fas fa-wand-magic-sparkles','ai ajaib otomatis'],['fas fa-robot','robot ai'],['fas fa-star','bintang favorit'],['fas fa-heart','suka hati'],['fas fa-award','penghargaan'],['fas fa-trophy','piala juara'],
+            ['fas fa-handshake','kerjasama kemitraan'],['fas fa-users','tim orang'],['fas fa-id-card','kartu identitas'],['fas fa-building','kantor gedung perusahaan'],['fas fa-house','rumah kost properti'],['fas fa-store','toko usaha umkm'],['fas fa-cart-shopping','belanja toko online'],
+            ['fas fa-calculator','hitung akuntansi'],['fas fa-file-excel','excel spreadsheet'],['fas fa-file-word','word dokumen'],['fas fa-file-pdf','pdf dokumen'],['fas fa-table','tabel data'],['fas fa-folder-open','folder arsip'],
+            ['fas fa-globe','dunia internet website'],['fas fa-link','tautan link'],['fas fa-cloud','cloud awan'],['fas fa-terminal','terminal command'],['fas fa-diagram-project','alur proyek diagram'],['fas fa-magnifying-glass','cari seo'],
+            ['fas fa-phone','telepon'],['fas fa-envelope','email surat'],['fas fa-location-dot','lokasi alamat'],['fas fa-circle-check','centang selesai'],
+            ['fab fa-instagram','instagram ig'],['fab fa-whatsapp','whatsapp wa'],['fab fa-youtube','youtube'],['fab fa-tiktok','tiktok'],['fab fa-facebook','facebook'],['fab fa-telegram','telegram'],['fab fa-google','google'],['fab fa-wordpress','wordpress'],['fab fa-android','android'],['fab fa-windows','windows']
+        ];
+        const ICON_FALLBACK = [
+            [/cctv|kamera|video|rekam/, 'fas fa-video'], [/jaring|network|wifi|internet/, 'fas fa-network-wired'], [/web|website|aplikasi|program/, 'fas fa-laptop-code'],
+            [/desain|grafis|logo|konten|poster/, 'fas fa-palette'], [/edit|film|animasi|motion/, 'fas fa-clapperboard'], [/servis|service|perbaik|support|komputer|laptop|printer/, 'fas fa-screwdriver-wrench'],
+            [/ajar|kursus|pelatihan|les/, 'fas fa-graduation-cap'], [/sosial|media|iklan|marketing|promosi/, 'fas fa-bullhorn']
+        ];
+        const _iconCache = {};
+        function normalizeIcon(raw) {
+            raw = String(raw || '').trim();
+            const m = raw.match(/class=["']([^"']+)["']/i); if (m) raw = m[1];
+            const toks = raw.split(/\s+/).filter(Boolean);
+            const nameTok = toks.find(t => /^fa-/.test(t) && !/^fa-(solid|regular|brands|light|thin|duotone|sharp|lg|xs|sm|2x|3x|fw|spin|pulse)$/.test(t));
+            if (!nameTok) return '';
+            const isBrand = toks.includes('fab') || toks.includes('fa-brands');
+            return (isBrand ? 'fab ' : 'fas ') + nameTok;
+        }
+        function iconOK(cls) {
+            if (cls in _iconCache) return _iconCache[cls];
+            const t = document.createElement('i'); t.className = cls; t.style.cssText = 'position:absolute;visibility:hidden;left:-99px';
+            document.body.appendChild(t);
+            const c = getComputedStyle(t, '::before').content;
+            t.remove();
+            return (_iconCache[cls] = !!c && c !== 'none' && c !== 'normal' && c !== '""');
+        }
+        function safeIcon(raw, nama) {
+            const c = normalizeIcon(raw);
+            if (c && iconOK(c)) return c;
+            const n = String(nama || '').toLowerCase();
+            for (const [re, ic] of ICON_FALLBACK) if (re.test(n)) return ic;
+            return 'fas fa-circle-check';
+        }
+        function buildIconPicker() {
+            const box = document.getElementById('icon-picker');
+            if (!box || box.dataset.ready) return;
+            box.dataset.ready = '1';
+            box.innerHTML = ICON_LIST.filter(([c]) => iconOK(c)).map(([c, k]) =>
+                `<button type="button" data-ic="${c}" data-k="${k}" title="${k.split(' ')[0]}" onclick="pickIcon('${c}')" class="h-11 rounded-lg bg-white/5 hover:bg-brand-cyan/30 text-lg text-gray-200 transition-colors"><i class="${c}"></i></button>`).join('');
+        }
+        function filterIcons() {
+            const q = document.getElementById('icon-search').value.toLowerCase().trim();
+            document.querySelectorAll('#icon-picker button').forEach(b => { b.style.display = (!q || b.dataset.k.includes(q) || b.dataset.ic.includes(q)) ? '' : 'none'; });
+        }
+        function pickIcon(c) {
+            document.getElementById('lay-icon').value = c;
+            onIconInput();
+        }
+        function onIconInput() {
+            const v = document.getElementById('lay-icon').value;
+            document.getElementById('icon-preview').className = v ? safeIcon(v, document.getElementById('lay-nama').value) : 'fas fa-circle-check';
+            document.querySelectorAll('#icon-picker button').forEach(b => { b.classList.toggle('ring-2', b.dataset.ic === normalizeIcon(v)); b.classList.toggle('ring-brand-cyan', b.dataset.ic === normalizeIcon(v)); });
+        }
+
+        // --- SLIDESHOW KARTU KARYA + LIGHTBOX (ringan: 1 timer, hanya yang terlihat) ---
+        const KARYA_IMGS = {};
+        const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const appContainer = document.getElementById('portfolio-app-container');
+        function loadSlide(el, i) {
+            const im = el.querySelectorAll('.slide')[i];
+            if (im && im.dataset.pending) { im.removeAttribute('data-pending'); im.src = imgCandidates(im.dataset.raw, +im.dataset.w || 700)[0] || PH_SVG; }
+        }
+        function stepSlide(el, d) {
+            const n = +el.dataset.n; if (n < 2) return;
+            const c = (+el.dataset.cur + d + n) % n;
+            loadSlide(el, c);
+            el.querySelectorAll('.slide').forEach((x, i) => x.classList.toggle('on', i === c));
+            el.querySelectorAll('.dots i').forEach((x, i) => x.classList.toggle('on', i === c));
+            el.dataset.cur = c;
+        }
+        const ssObserver = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+                const el = en.target; el._vis = en.isIntersecting;
+                if (en.isIntersecting && !el._init) {
+                    el._init = true; loadSlide(el, 0);
+                    setTimeout(() => { for (let i = 1; i < +el.dataset.n; i++) loadSlide(el, i); }, 700);
+                }
+            });
+        }, { root: appContainer, rootMargin: '150px' });
+        setInterval(() => {
+            if (document.hidden || REDUCED) return;
+            document.querySelectorAll('.slideshow').forEach(el => { if (el._vis && !el._hold) stepSlide(el, 1); });
+        }, 3200);
+
+        function slideshowHTML(k) {
+            const raws = [k.gambar1, k.gambar2, k.gambar3].filter(Boolean);
+            KARYA_IMGS[k.id] = raws;
+            if (!raws.length) return `<div class="h-56 relative bg-black/50 border-b border-white/5"><img src="${PH_SVG}" class="w-full h-full object-cover" alt=""></div>`;
+            const slides = raws.map((r, i) => `<img class="slide${i === 0 ? ' on' : ''}" data-pending="1" data-raw="${esc(r)}" data-w="700" alt="${esc(k.judul)} ${i + 1}" decoding="async">`).join('');
+            const dots = raws.length > 1 ? `<div class="dots">${raws.map((_, i) => `<i class="${i === 0 ? 'on' : ''}"></i>`).join('')}</div>` : '';
+            const badge = raws.length > 1 ? `<div class="absolute top-3 right-3 z-10 bg-black/70 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm pointer-events-none"><i class="fas fa-images mr-1"></i>${raws.length}</div>` : '';
+            return `<div class="slideshow h-56 border-b border-white/5" data-id="${esc(k.id)}" data-n="${raws.length}" data-cur="0" onmouseenter="this._hold=1" onmouseleave="this._hold=0" onclick="openLightbox('${esc(k.id)}', +this.dataset.cur)">${slides}${dots}${badge}</div>`;
+        }
+
+        let LB = { id: null, i: 0 };
+        function lbShow() {
+            const arr = KARYA_IMGS[LB.id] || [], el = document.getElementById('lb-img');
+            el.dataset.n = 0; el.dataset.raw = arr[LB.i] || ''; el.dataset.w = 1400;
+            el.src = imgCandidates(arr[LB.i], 1400)[0] || PH_SVG;
+            document.getElementById('lb-count').textContent = (LB.i + 1) + ' / ' + arr.length;
+        }
+        function openLightbox(id, i) { if (!(KARYA_IMGS[id] || []).length) return; LB = { id, i: i || 0 }; lbShow(); document.getElementById('lightbox').classList.add('open'); }
+        function lbStep(d) { const n = (KARYA_IMGS[LB.id] || []).length; if (!n) return; LB.i = (LB.i + d + n) % n; lbShow(); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+        // --- VIDEO YOUTUBE POP-UP ---
+        function parseYouTube(url) {
+            if (!url) return null;
+            let u; try { u = new URL(String(url).trim()); } catch (e) { return null; }
+            const h = u.hostname.replace(/^www\.|^m\./, '');
+            let id = null, short = false;
+            if (h === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+            else if (h === 'youtube.com' || h === 'youtube-nocookie.com') {
+                if (u.pathname === '/watch') id = u.searchParams.get('v');
+                else { const m = u.pathname.match(/^\/(shorts|embed|live|v)\/([\w-]{11})/); if (m) { id = m[2]; short = m[1] === 'shorts'; } }
+            }
+            if (!id || !/^[\w-]{11}$/.test(id)) return null;
+            let start = 0; const t = u.searchParams.get('t') || u.searchParams.get('start');
+            if (t) { const mm = String(t).match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/); if (mm) start = (+mm[1] || 0) * 3600 + (+mm[2] || 0) * 60 + (+mm[3] || 0); }
+            return { id, short, start };
+        }
+        function openVideo(btn) {
+            const id = btn.dataset.yt, isShort = btn.dataset.short === '1', start = +btn.dataset.start || 0;
+            if (!/^[\w-]{11}$/.test(id)) return;
+            const wrap = document.getElementById('video-frame-wrap'), box = document.getElementById('video-box');
+            box.style.maxWidth = isShort ? '360px' : '';
+            wrap.style.aspectRatio = isShort ? '9/16' : '16/9';
+            wrap.style.maxHeight = isShort ? '82vh' : '';
+            const src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1' + (start ? '&start=' + start : '');
+            wrap.innerHTML = '<iframe src="' + src + '" title="Video" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+            document.getElementById('video-yt-link').href = 'https://www.youtube.com/watch?v=' + id + (start ? '&t=' + start + 's' : '');
+            document.getElementById('video-modal').style.display = 'flex';
+        }
+        function closeVideo() {
+            document.getElementById('video-modal').style.display = 'none';
+            document.getElementById('video-frame-wrap').innerHTML = '';   // hentikan video
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && document.getElementById('video-modal').style.display === 'flex') closeVideo();
+            if (!document.getElementById('lightbox').classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowRight') lbStep(1); if (e.key === 'ArrowLeft') lbStep(-1);
+        });
+
+        // --- FETCH CORE ---
+        async function fetchAPI(action, data = {}) {
+            if(IS_PREVIEW) return {status:'error', message:'Mode Preview tidak mengakses backend.'};
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action, data, token: adminToken })
+                });
+                return await res.json();
+            } catch(e) { return { status: 'error', message: 'Koneksi API Gagal' }; }
+        }
+
+        // --- BACKGROUND LAYANAN ---
+        let LAY_BG_URL = '';
+        function layBgEl() { return document.getElementById('layanan-bg'); }
+        function loadLayBg() {
+            const box = layBgEl(), img = document.getElementById('layanan-bg-img');
+            if (!box || !img) return;
+            const sec = document.getElementById('view-layanan');
+            if (!LAY_BG_URL) {
+                box.classList.remove('has-img'); if (sec) sec.classList.remove('with-bg');
+                img.removeAttribute('src'); img.dataset.cur = ''; img.classList.add('opacity-0');
+                return;
+            }
+            box.classList.add('has-img'); if (sec) sec.classList.add('with-bg');
+            setImg(img, LAY_BG_URL, window.innerWidth < 768 ? 900 : 1600);   // baru dimuat saat menu Layanan dibuka
+        }
+        function toggleLayBg(on) { const box = layBgEl(); if (!box) return; box.classList.toggle('on', !!on); if (on) loadLayBg(); }
+        function previewDim(v) { document.getElementById('lay-dim-val').textContent = v + '%'; layBgEl().style.setProperty('--lay-dim', (v / 100).toFixed(2)); }
+        async function simpanLayDim(v) {
+            if (IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const r = await fetchAPI('updateConfig', { key: 'LAYANAN_BG_DIM', value: String(v) });
+            showToast(r.status === 'success' ? 'Kegelapan overlay disimpan' : 'Gagal menyimpan');
+        }
+        async function simpanLayBg() {
+            if (IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const file = document.getElementById('laybg-file').files[0];
+            if (!file) return showToast("Pilih gambar terlebih dahulu");
+            setLoad(true);
+            try {
+                const b64 = await compressFile(file, 1600, 0.72);
+                const url = await uploadAndGetUrl(b64, 'LayananBg.jpg');
+                const r = await fetchAPI('updateConfig', { key: 'LAYANAN_BG', value: url });
+                if (r.status === 'success') { showToast("Background Layanan diperbarui!"); LAY_BG_URL = url; _lastSig = ''; loadLayBg(); document.getElementById('laybg-file').value = ''; }
+                else showToast("Gagal update konfigurasi");
+            } catch (e) { showToast("Gagal upload: " + (e && e.message ? e.message : '')); }
+            setLoad(false);
+        }
+        async function hapusLayBg() {
+            if (IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            if (!confirm('Hapus background halaman Layanan?')) return;
+            setLoad(true);
+            const r = await fetchAPI('updateConfig', { key: 'LAYANAN_BG', value: '' });
+            if (r.status === 'success') { LAY_BG_URL = ''; _lastSig = ''; loadLayBg(); showToast("Background dihapus"); } else showToast("Gagal menghapus");
+            setLoad(false);
+        }
+
+        // --- DATA RENDERER ---
+        function renderAdminTables() {
+            if(!APP_DATA) return;
+            const tbKarya = document.getElementById('admin-table-karya');
+            tbKarya.innerHTML = (APP_DATA.Karya || []).slice().reverse().map(k => `
+                    <tr class="border-b border-white/5 hover:bg-white/5">
+                        <td class="p-4 font-bold text-white">${esc(k.judul)}</td>
+                        <td class="p-4">${esc(k.kategori)}</td>
+                        <td class="p-4 text-center"><button onclick="hapusData('Karya', '${esc(k.id)}')" class="text-red-400 hover:text-red-300 p-2"><i class="fas fa-trash"></i></button></td>
+                    </tr>`).join('');
+
+            const tbLay = document.getElementById('admin-table-layanan');
+            tbLay.innerHTML = (APP_DATA.Layanan || []).map(l => `
+                    <tr class="border-b border-white/5 hover:bg-white/5">
+                        <td class="p-4 text-xl"><i class="${safeIcon(l.icon, l.nama)}"></i></td>
+                        <td class="p-4 font-bold text-white">${esc(l.nama)}</td>
+                        <td class="p-4 text-center"><button onclick="hapusData('Layanan', '${esc(l.id)}')" class="text-red-400 hover:text-red-300 p-2"><i class="fas fa-trash"></i></button></td>
+                    </tr>`).join('');
+        }
+
+        // --- CACHE (stale-while-revalidate): kunjungan berikutnya langsung tampil ---
+        const CACHE_KEY = 'SD_CACHE_V2';
+        function readCache() { try { return JSON.parse(store.get(CACHE_KEY)); } catch(e) { return null; } }
+        function writeCache(d) { store.set(CACHE_KEY, JSON.stringify(d)); }
+        function cleanData(d) {
+            return { Karya: d.Karya || [], Layanan: d.Layanan || [], Config: (d.Config || []).filter(c => c.key && c.key !== 'ADMIN_PASSWORD' && c.key !== 'AUTH_TOKEN') };
+        }
+
+        let _lastSig = '', _firstLoad = true;
+        function renderPublic(d) {
+            const sig = JSON.stringify(d);
+            if (sig === _lastSig) return;
+            _lastSig = sig;
+
+            const config = d.Config || [];
+            try { sdApplyOwnerTheme(config); } catch (e) {}
+            const heroUrl = config.find(c => c.key === 'HERO_IMAGE');
+            setImg(document.getElementById('public-hero-img'), heroUrl && heroUrl.value ? heroUrl.value : '', window.innerWidth < 768 ? 800 : 1000);
+            const aboutUrl = config.find(c => c.key === 'ABOUT_IMAGE');
+            setImg(document.getElementById('public-about-img'), aboutUrl && aboutUrl.value ? aboutUrl.value : '', 700);
+
+            const lbUrl = config.find(c => c.key === 'LAYANAN_BG');
+            LAY_BG_URL = lbUrl && lbUrl.value ? String(lbUrl.value) : '';
+            const lbDim = config.find(c => c.key === 'LAYANAN_BG_DIM');
+            const dimV = (lbDim && lbDim.value !== '' && !isNaN(Number(lbDim.value))) ? Math.min(92, Math.max(55, Number(lbDim.value))) : 78;
+            layBgEl().style.setProperty('--lay-dim', (dimV / 100).toFixed(2));
+            const rng = document.getElementById('lay-dim-range'); if (rng) { rng.value = dimV; document.getElementById('lay-dim-val').textContent = dimV + '%'; }
+            if (layBgEl().classList.contains('on')) loadLayBg();
+
+            // Karya
+            const karya = (d.Karya || []).slice().reverse();
+            const grid = document.getElementById('karya-grid');
+            if (karya.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500">Belum ada karya yang diunggah.</p>`;
+            } else {
+                grid.innerHTML = karya.map(k => {
+                    const kat = String(k.kategori || '');
+                    const badgeColor = kat.toLowerCase().includes('web') ? 'text-brand-magenta' : 'text-brand-cyan';
+                    let linkHTML = '';
+                    const yt = parseYouTube(k.link);
+                    if (yt) linkHTML = `<button type="button" data-yt="${yt.id}" data-short="${yt.short ? 1 : 0}" data-start="${yt.start}" onclick="openVideo(this)" class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600/90 hover:bg-red-500 text-white text-sm font-bold transition-colors"><i class="fab fa-youtube"></i>Tonton Video</button>`;
+                    else if (k.link) linkHTML = `<a href="${esc(k.link)}" target="_blank" rel="noopener" class="mt-4 inline-block text-brand-blue hover:text-white transition-colors text-sm font-bold"><i class="fas fa-external-link-alt mr-1"></i>Kunjungi Proyek</a>`;
+                    else if (kat === 'Desain') linkHTML = `<span class="mt-4 inline-block text-gray-500 text-xs"><i class="fas fa-image mr-1"></i>Proyek Internal / Desain</span>`;
+                    return `
+                        <div class="glass-panel rounded-2xl overflow-hidden group">
+                            ${slideshowHTML(k)}
+                            <div class="p-6">
+                                <span class="text-xs font-bold ${badgeColor} mb-2 block uppercase tracking-wider">${esc(kat)}</span>
+                                <h3 class="text-xl font-bold mb-2 text-white">${esc(k.judul)}</h3>
+                                <p class="text-sm text-gray-400 line-clamp-3 leading-relaxed">${esc(k.deskripsi)}</p>
+                                ${linkHTML}
+                            </div>
+                        </div>`;
+                }).join('');
+                grid.querySelectorAll('.slideshow').forEach(el => ssObserver.observe(el));
+            }
+
+            // Layanan
+            const layanan = d.Layanan || [];
+            const layGrid = document.getElementById('layanan-grid');
+            if (layanan.length === 0) {
+                layGrid.innerHTML = `<p class="col-span-full text-center text-gray-500">Belum ada layanan yang didaftarkan.</p>`;
+            } else {
+                const colors = ['text-brand-magenta', 'text-brand-violet', 'text-brand-cyan', 'text-brand-blue'];
+                layGrid.innerHTML = layanan.map((l, idx) => {
+                    const colorClass = colors[idx % colors.length];
+                    const waText = encodeURIComponent(`Halo, saya tertarik dengan layanan ${l.nama}`);
+                    return `
+                        <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform border-t border-${colorClass.replace('text-', '')}/30">
+                            <i class="${safeIcon(l.icon, l.nama)} text-4xl ${colorClass} mb-6"></i>
+                            <h3 class="text-2xl font-bold mb-4">${esc(l.nama)}</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">${esc(l.deskripsi)}</p>
+                            <a href="https://wa.me/6281241125930?text=${waText}" target="_blank" rel="noopener" class="block text-center w-full py-3 rounded-xl bg-white/5 hover:bg-white/20 transition-colors font-bold text-sm">Pesan Layanan</a>
+                        </div>`;
+                }).join('');
+            }
+        }
+
+        async function loadPublicData() {
+            if(IS_PREVIEW) {
+                document.getElementById('karya-grid').innerHTML = `<div class="glass-panel p-6 rounded-2xl text-center col-span-full border-brand-magenta/30">Preview Mode</div>`;
+                return;
+            }
+            if (_firstLoad) {
+                _firstLoad = false;
+                const c = readCache();
+                if (c && c.Karya) { APP_DATA = cleanData(c); renderPublic(APP_DATA); appReady(); }
+            }
+            const res = await fetchAPI('getData');
+            if(res.status === 'success') {
+                APP_DATA = cleanData(res.data);
+                writeCache(APP_DATA);
+                renderPublic(APP_DATA);
+                appReady();
+                if(adminToken) renderAdminTables();
+            } else if (!APP_DATA) {
+                appReady();
+                setImg(document.getElementById('public-hero-img'), '', 800);
+                document.getElementById('karya-grid').innerHTML = `<p class="col-span-full text-center text-gray-500">Gagal memuat data. Silakan muat ulang halaman.</p>`;
+                document.getElementById('layanan-grid').innerHTML = `<p class="col-span-full text-center text-gray-500">Gagal memuat data. Silakan muat ulang halaman.</p>`;
+            }
+        }
+
+        // --- ADMIN LOGIC ---
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function checkAdminLogin() {
+            if (adminToken) {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('flex');
+                if(APP_DATA) renderAdminTables();
+            } else {
+                document.getElementById('admin-login').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('flex');
+            }
+        }
+
+        async function loginAdmin() {
+            const pass = document.getElementById('admin-pass').value;
+            if(!pass) return showToast("Masukkan password!");
+            
+            setLoad(true);
+            const hashed = await sha256(pass);
+            const res = await fetchAPI('login', { password: hashed });
+            setLoad(false);
+            
+            if (res.status === 'success') {
+                adminToken = res.token;
+                store.set('SujatmikoToken', adminToken);
+                document.getElementById('admin-pass').value = '';
+                showToast("Login Berhasil");
+                checkAdminLogin();
+            } else {
+                showToast(res.message || "Password Salah");
+            }
+        }
+
+        function logoutAdmin() {
+            adminToken = null;
+            store.del('SujatmikoToken');
+            checkAdminLogin();
+            showToast("Berhasil Logout");
+        }
+
+        async function hapusData(sheet, id) {
+            if(!confirm(`Yakin ingin menghapus data ini dari ${sheet}?`)) return;
+            setLoad(true);
+            const res = await fetchAPI('deleteData', { sheet: sheet, id: id });
+            setLoad(false);
+            if(res.status === 'success') {
+                showToast("Data Dihapus!");
+                loadPublicData();
+            } else {
+                showToast("Gagal menghapus data");
+            }
+        }
+
+        // --- IMAGE COMPRESSION & UPLOAD ---
+        function compressFile(file, maxWidth = 1200, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                if(!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if(w > maxWidth) { h *= maxWidth/w; w = maxWidth; }
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h);
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = () => reject(new Error('File gambar tidak bisa dibaca'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadAndGetUrl(base64Data, filename) {
+            if(!base64Data) return "";
+            const res = await fetchAPI('uploadImage', { base64: base64Data, filename: filename, mimeType: 'image/jpeg' });
+            if (res.status !== 'success' || !res.url) throw new Error(res.message || 'Upload ke Drive gagal (cek izin/deploy Apps Script)');
+            return res.url;
+        }
+
+        // --- SIMPAN KARYA ---
+        async function simpanKaryaReal() {
+            if(IS_PREVIEW) return showToast("Matikan IS_PREVIEW untuk menyimpan data");
+            
+            const judul = document.getElementById('karya-judul').value;
+            const kategori = document.getElementById('karya-kategori').value;
+            const link = document.getElementById('karya-link').value;
+            const deskripsi = document.getElementById('karya-deskripsi').value;
+            
+            if(!judul || !deskripsi) return showToast("Judul dan Deskripsi wajib diisi!");
+            if(kategori !== 'Desain' && !link) return showToast("URL wajib diisi untuk kategori Website!");
+
+            const f1 = document.getElementById('karya-file1').files[0];
+            const f2 = document.getElementById('karya-file2').files[0];
+            const f3 = document.getElementById('karya-file3').files[0];
+            
+            if(!f1) return showToast("Minimal unggah GAMBAR 1 (Utama)!");
+
+            setLoad(true);
+            try {
+                const b1 = await compressFile(f1, 1000, 0.78);
+                const b2 = await compressFile(f2, 1000, 0.78);
+                const b3 = await compressFile(f3, 1000, 0.78);
+                
+                showToast("Mengunggah gambar ke Drive...");
+                const u1 = await uploadAndGetUrl(b1, 'Karya1_' + Date.now() + '.jpg');
+                const u2 = await uploadAndGetUrl(b2, 'Karya2_' + Date.now() + '.jpg');
+                const u3 = await uploadAndGetUrl(b3, 'Karya3_' + Date.now() + '.jpg');
+                
+                showToast("Menyimpan ke Database...");
+                const payload = {
+                    judul: judul, kategori: kategori, link: link, deskripsi: deskripsi,
+                    gambar1: u1, gambar2: u2, gambar3: u3
+                };
+                
+                const saveRes = await fetchAPI('saveKarya', payload);
+                if(saveRes.status === 'success') {
+                    showToast("Proyek berhasil ditambahkan!");
+                    document.getElementById('karya-judul').value = '';
+                    document.getElementById('karya-link').value = '';
+                    document.getElementById('karya-deskripsi').value = '';
+                    document.getElementById('karya-file1').value = '';
+                    document.getElementById('karya-file2').value = '';
+                    document.getElementById('karya-file3').value = '';
+                    loadPublicData();
+                } else {
+                    showToast("Gagal menyimpan ke Sheet");
+                }
+            } catch(e) {
+                showToast("Gagal upload: " + (e && e.message ? e.message : 'kesalahan tidak dikenal'));
+            }
+            setLoad(false);
+        }
+
+        // --- SIMPAN LAYANAN (DENGAN AUTO-EXTRACT HTML) ---
+        async function simpanLayanan() {
+            if(IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const nama = document.getElementById('lay-nama').value;
+            let rawIcon = document.getElementById('lay-icon').value || 'fas fa-check-circle';
+            const desc = document.getElementById('lay-desc').value;
+
+            if(!nama || !desc) return showToast("Nama dan Deskripsi wajib diisi!");
+
+            // Fitur Cerdas: Mengekstrak string class jika User mem-paste elemen HTML <i class="..."></i> utuh
+            let finalIcon = normalizeIcon(rawIcon) || safeIcon('', nama);
+
+            setLoad(true);
+            const payload = { nama: nama, icon: finalIcon, deskripsi: desc };
+            const res = await fetchAPI('saveData', { sheet: 'Layanan', payload: payload });
+            setLoad(false);
+
+            if(res.status === 'success') {
+                showToast("Layanan berhasil ditambahkan!");
+                document.getElementById('lay-nama').value = '';
+                document.getElementById('lay-icon').value = '';
+                document.getElementById('lay-desc').value = '';
+                onIconInput();
+                loadPublicData();
+            } else {
+                showToast("Gagal menyimpan data");
+            }
+        }
+
+        // --- PENGATURAN (HERO, ABOUT & PASSWORD) ---
+        async function simpanHero() {
+            if(IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const file = document.getElementById('hero-file').files[0];
+            if(!file) return showToast("Pilih gambar terlebih dahulu");
+            
+            setLoad(true);
+            try {
+                const b64 = await compressFile(file, 1100, 0.75);
+                const url = await uploadAndGetUrl(b64, 'HeroImage.jpg');
+                if(url) {
+                    const saveRes = await fetchAPI('updateConfig', {key: 'HERO_IMAGE', value: url});
+                    if(saveRes.status === 'success') {
+                        showToast("Gambar Beranda Diperbarui!");
+                        { const h = document.getElementById('public-hero-img'); h.dataset.cur = ''; setImg(h, url, window.innerWidth < 768 ? 800 : 1000); _lastSig = ''; }
+                    } else showToast("Gagal update konfigurasi");
+                }
+            } catch(e) { showToast("Gagal upload: " + (e && e.message ? e.message : '')); }
+            setLoad(false);
+        }
+
+        async function simpanAbout() {
+            if(IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const file = document.getElementById('about-file').files[0];
+            if(!file) return showToast("Pilih gambar terlebih dahulu");
+            
+            setLoad(true);
+            try {
+                const b64 = await compressFile(file, 900, 0.78); 
+                const url = await uploadAndGetUrl(b64, 'AboutImage.jpg');
+                if(url) {
+                    const saveRes = await fetchAPI('updateConfig', {key: 'ABOUT_IMAGE', value: url});
+                    if(saveRes.status === 'success') {
+                        showToast("Gambar Tentang Saya Diperbarui!");
+                        { const a = document.getElementById('public-about-img'); a.dataset.cur = ''; setImg(a, url, 700); _lastSig = ''; }
+                    } else showToast("Gagal update konfigurasi");
+                }
+            } catch(e) { showToast("Gagal upload: " + (e && e.message ? e.message : '')); }
+            setLoad(false);
+        }
+
+        async function simpanPassword() {
+            if(IS_PREVIEW) return showToast("Matikan IS_PREVIEW");
+            const oldP = document.getElementById('old-pwd').value;
+            const newP = document.getElementById('new-pwd').value;
+            if(!oldP || !newP) return showToast("Isi kedua kolom password");
+            if(newP.length < 5) return showToast("Password baru minimal 5 karakter");
+
+            setLoad(true);
+            const oldHash = await sha256(oldP);
+            const newHash = await sha256(newP);
+            
+            const res = await fetchAPI('changePassword', { oldPwd: oldHash, newPwd: newHash });
+            setLoad(false);
+            
+            if(res.status === 'success') {
+                showToast("Password berhasil diganti!");
+                document.getElementById('old-pwd').value = '';
+                document.getElementById('new-pwd').value = '';
+            } else {
+                showToast(res.message);
+            }
+        }
+
+        // --- INIT (jangan tunggu window.load: data & gambar dimuat secepatnya) ---
+        try {   // lepas dari wrapper template Blogger yang bisa memotong elemen position:fixed
+            const _c = document.getElementById('portfolio-app-container');
+            if (_c && _c.parentNode !== document.body) document.body.appendChild(_c);
+        } catch (e) {}
+        if (!window.location.hash) { window.location.hash = 'beranda'; } else { route(); }
+        loadPublicData();
+        setTimeout(appReady, 12000);   // jaga-jaga: jangan biarkan loader menutup selamanya
+        (window.requestIdleCallback || (f => setTimeout(f, 400)))(initParticles);
+        window.addEventListener('load', buildIconPicker);
+    </script>
+</div>
+</body>
+</html>
